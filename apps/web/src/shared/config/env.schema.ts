@@ -17,5 +17,7 @@ export function createEnvSchema(mode: string) {
       "VITE_API_URL must use https in production builds",
     ),
     VITE_SENTRY_DSN: z.preprocess(emptyToUndefined, webUrl().optional()),
+    // Development only: serve the API from the in-browser mock (src/app/mocks).
+    VITE_API_MOCK: z.preprocess(emptyToUndefined, z.stringbool().optional()),
   })
 }

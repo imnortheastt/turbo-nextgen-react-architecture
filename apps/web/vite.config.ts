@@ -3,6 +3,7 @@ import babel from "@rolldown/plugin-babel"
 import tailwindcss from "@tailwindcss/vite"
 import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import react, { reactCompilerPreset } from "@vitejs/plugin-react"
+import { msw } from "msw/vite"
 import { defineConfig, loadEnv } from "vite"
 
 import { createEnvSchema } from "./src/shared/config/env.schema.ts"
@@ -28,6 +29,9 @@ export default defineConfig(({ mode }) => {
         outdir: "./src/shared/i18n/paraglide",
         strategy: ["localStorage", "preferredLanguage", "baseLocale"],
       }),
+      // Serves /mockServiceWorker.js for the dev mock API. `apply: "serve"` matters:
+      // in worker-only mode the plugin would also emit the worker into dist.
+      { ...msw({ mode: "worker-only" }), apply: "serve" },
     ],
     resolve: {
       tsconfigPaths: true,

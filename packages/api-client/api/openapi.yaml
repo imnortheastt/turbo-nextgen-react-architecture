@@ -2,11 +2,203 @@ openapi: 3.1.0
 info:
   title: Boilerplate API
   version: 1.0.0
-  description: Example contract for the todos demo. Replace with your backend's spec.
+  description: Example contract for the boilerplate (auth, current user, todos demo). Replace with your backend's spec.
 tags:
   - name: health
+  - name: auth
+  - name: me
   - name: todos
 paths:
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      description: Returns a short-lived access token and sets the httpOnly refresh cookie.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthTokens"
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      description: Creates an unverified account, signs it in and sends a verification email.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: Account created and signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthTokens"
+  /auth/refresh:
+    post:
+      operationId: refreshSession
+      tags: [auth]
+      description: Exchanges the httpOnly refresh cookie for a new access token (and rotates the cookie).
+      responses:
+        "200":
+          description: New access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessToken"
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      description: Revokes the current refresh token and clears its cookie.
+      responses:
+        "204":
+          description: Signed out
+  /auth/forgot-password:
+    post:
+      operationId: forgotPassword
+      tags: [auth]
+      description: Sends a reset link if the account exists; the response never reveals whether it does.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordRequest"
+      responses:
+        "202":
+          description: Accepted
+  /auth/reset-password:
+    post:
+      operationId: resetPassword
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordRequest"
+      responses:
+        "204":
+          description: Password changed
+  /auth/verify-email:
+    post:
+      operationId: verifyEmail
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyEmailRequest"
+      responses:
+        "204":
+          description: Email verified
+  /auth/resend-verification:
+    post:
+      operationId: resendVerification
+      tags: [auth]
+      security:
+        - bearerAuth: []
+      responses:
+        "202":
+          description: Verification email sent
+  /me:
+    get:
+      operationId: getMe
+      tags: [me]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: The signed-in user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    patch:
+      operationId: updateMe
+      tags: [me]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMeRequest"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /me/password:
+    post:
+      operationId: changePassword
+      tags: [me]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordRequest"
+      responses:
+        "204":
+          description: Password changed
+  /me/sessions:
+    get:
+      operationId: listSessions
+      tags: [me]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Active sessions (one per refresh token)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+  /me/sessions/revoke-others:
+    post:
+      operationId: revokeOtherSessions
+      tags: [me]
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Every session except the current one revoked
+  /me/sessions/{id}:
+    delete:
+      operationId: revokeSession
+      tags: [me]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Session revoked
   /health:
     get:
       operationId: getHealth
@@ -77,7 +269,122 @@ paths:
               schema:
                 $ref: "#/components/schemas/Todo"
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
   schemas:
+    User:
+      type: object
+      required: [id, name, email, emailVerified, createdAt]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        emailVerified:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+    AccessToken:
+      type: object
+      required: [accessToken]
+      properties:
+        accessToken:
+          type: string
+    AuthTokens:
+      type: object
+      required: [accessToken, user]
+      properties:
+        accessToken:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    RegisterRequest:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+          maxLength: 128
+    ForgotPasswordRequest:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+    ResetPasswordRequest:
+      type: object
+      required: [token, password]
+      properties:
+        token:
+          type: string
+        password:
+          type: string
+          minLength: 8
+          maxLength: 128
+    VerifyEmailRequest:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+    UpdateMeRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+    ChangePasswordRequest:
+      type: object
+      required: [currentPassword, newPassword]
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+          minLength: 8
+          maxLength: 128
+    Session:
+      type: object
+      required: [id, createdAt, lastSeenAt, userAgent, current]
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        lastSeenAt:
+          type: string
+          format: date-time
+        userAgent:
+          type: string
+        current:
+          type: boolean
     Health:
       type: object
       required: [status]
@@ -132,3 +439,7 @@ components:
       properties:
         message:
           type: string
+        code:
+          type: string
+          description: Machine-readable reason the UI maps to a message.
+          enum: [invalid_credentials, email_taken, invalid_token, wrong_password]

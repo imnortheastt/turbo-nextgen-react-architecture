@@ -16,6 +16,12 @@ import { configureApiClient } from "@repo/api-client"
 document.documentElement.lang = getLocale()
 configureApiClient({ baseUrl: env.VITE_API_URL })
 
+// The DEV check is a build-time constant, so production bundles drop the mock entirely.
+if (import.meta.env.DEV && env.VITE_API_MOCK) {
+  const { startMockWorker } = await import("@/app/mocks/browser.ts")
+  await startMockWorker(env.VITE_API_URL)
+}
+
 const queryClient = createQueryClient()
 const router = createAppRouter(queryClient)
 void initSentry(router)

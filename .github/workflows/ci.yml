@@ -47,6 +47,10 @@ jobs:
 
       - run: bunx turbo run lint typecheck test build --cache-dir=.turbo
 
+      # The dev mock API (MSW) must never reach production bundles.
+      - name: No mock API in the production build
+        run: "test -d apps/web/dist && ! grep -rIl -e mockServiceWorker -e setupWorker -e '\\[MSW\\]' apps/web/dist"
+
       - name: Dead code (knip)
         run: bun run knip
 
