@@ -1,0 +1,20 @@
+import { TanStackDevtools } from "@tanstack/react-devtools"
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
+import { useRouter } from "@tanstack/react-router"
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+
+export default function Devtools() {
+  const router = useRouter()
+  return (
+    <TanStackDevtools
+      plugins={[
+        { id: "tanstack-query", name: "TanStack Query", render: <ReactQueryDevtoolsPanel /> },
+        {
+          id: "tanstack-router",
+          name: "TanStack Router",
+          render: <TanStackRouterDevtoolsPanel router={router} />,
+        },
+      ]}
+    />
+  )
+}
