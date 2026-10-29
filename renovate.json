@@ -1,0 +1,57 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "packageRules": [
+    {
+      "groupName": "react",
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"]
+    },
+    {
+      "groupName": "tanstack",
+      "matchPackageNames": ["@tanstack/**"]
+    },
+    {
+      "groupName": "vitest and msw",
+      "matchPackageNames": ["vitest", "@vitest/**", "msw", "happy-dom"]
+    },
+    {
+      "groupName": "lint and format",
+      "matchPackageNames": [
+        "oxlint",
+        "oxlint-tsgolint",
+        "oxfmt",
+        "knip",
+        "steiger",
+        "@feature-sliced/**",
+        "lefthook",
+        "@commitlint/**"
+      ]
+    },
+    {
+      "groupName": "bun",
+      "matchPackageNames": ["bun", "oven/bun", "oven-sh/setup-bun"]
+    },
+    {
+      "groupName": "github actions",
+      "matchManagers": ["github-actions"]
+    },
+    {
+      "groupName": "turbo",
+      "matchPackageNames": ["turbo"]
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Keep the turbo version used by `bunx` in Dockerfiles in sync with package.json",
+      "managerFilePatterns": ["/(^|/)Dockerfile$/"],
+      "matchStrings": ["bunx turbo@(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "turbo",
+      "datasourceTemplate": "npm"
+    }
+  ]
+}

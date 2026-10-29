@@ -19,5 +19,3 @@ export function createEnvSchema(mode: string) {
     VITE_SENTRY_DSN: z.preprocess(emptyToUndefined, webUrl().optional()),
   })
 }
-
-export type Env = z.infer<ReturnType<typeof createEnvSchema>>

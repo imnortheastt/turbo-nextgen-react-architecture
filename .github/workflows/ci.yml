@@ -46,3 +46,36 @@ jobs:
       - run: bun run format:check
 
       - run: bunx turbo run lint typecheck test build --cache-dir=.turbo
+
+      - name: Dead code (knip)
+        run: bun run knip
+
+      # A stale committed route tree changes the build inputs, so the build runs and
+      # regenerates it; a diff here means routeTree.gen.ts was not committed.
+      - name: Generated route tree is current
+        run: git diff --exit-code -- apps/web/src/app/routeTree.gen.ts
+
+      - name: Generated API client matches the spec
+        run: |
+          bunx turbo run api:gen
+          git diff --exit-code -- packages/api-client/src/generated
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build image
+        run: docker build -f apps/web/Dockerfile --build-arg VITE_API_URL=https://api.example.com -t fsd-web .
+
+      - name: Smoke test (deep link, security headers, CSP)
+        run: |
+          docker run -d --name web -p 8080:80 fsd-web
+          for i in $(seq 1 20); do curl -fs localhost:8080/ >/dev/null && break; sleep 1; done
+          curl -fs localhost:8080/todos | grep -q '<div id="root">'
+          headers=$(curl -fsI localhost:8080/todos)
+          echo "$headers"
+          for h in content-security-policy x-content-type-options referrer-policy x-frame-options; do
+            echo "$headers" | grep -qi "^$h:" || { echo "missing $h"; exit 1; }
+          done
+          echo "$headers" | grep -qi "connect-src 'self' https://api.example.com"

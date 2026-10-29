@@ -13,7 +13,7 @@ const STATUS_LABELS: Record<TodoStatus, () => string> = {
 
 // Widget-local URL state lives in nuqs; loader-relevant params (page) use validateSearch.
 // Demo only: filters the loaded page client-side because the example API has no status param.
-export const statusParser = parseAsStringLiteral(TODO_STATUSES).withDefault("all")
+const statusParser = parseAsStringLiteral(TODO_STATUSES).withDefault("all")
 
 export function useStatusFilter() {
   return useQueryState("status", statusParser)

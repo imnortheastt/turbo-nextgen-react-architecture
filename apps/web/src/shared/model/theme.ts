@@ -16,7 +16,7 @@ const isMode = (value: unknown): value is Mode => MODES.includes(value as Mode)
 const isPalette = (value: unknown): value is Palette => PALETTES.includes(value as Palette)
 
 /** Keeps only known values; anything else in storage falls back to defaults. */
-export function sanitizeTheme(value: unknown): ThemePreference {
+function sanitizeTheme(value: unknown): ThemePreference {
   const state = (value ?? {}) as Partial<Record<keyof ThemePreference, unknown>>
   return {
     mode: isMode(state.mode) ? state.mode : DEFAULT_THEME.mode,
@@ -36,12 +36,12 @@ export function readPersistedTheme(raw: string | null): ThemePreference {
   }
 }
 
-export function resolveMode(mode: Mode, prefersDark: boolean): "light" | "dark" {
+function resolveMode(mode: Mode, prefersDark: boolean): "light" | "dark" {
   if (mode === "system") return prefersDark ? "dark" : "light"
   return mode
 }
 
-export function applyTheme(root: HTMLElement, theme: ThemePreference, prefersDark: boolean): void {
+function applyTheme(root: HTMLElement, theme: ThemePreference, prefersDark: boolean): void {
   const resolved = resolveMode(theme.mode, prefersDark)
   root.classList.toggle("dark", resolved === "dark")
   root.dataset.palette = theme.palette
@@ -77,7 +77,7 @@ function subscribeToColorScheme(onChange: () => void): () => void {
   return () => query.removeEventListener("change", onChange)
 }
 
-export function usePrefersDark(): boolean {
+function usePrefersDark(): boolean {
   return useSyncExternalStore(subscribeToColorScheme, () => window.matchMedia(DARK_QUERY).matches)
 }
 

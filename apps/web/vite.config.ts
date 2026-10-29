@@ -9,7 +9,7 @@ import { createEnvSchema } from "./src/shared/config/env.schema.ts"
 
 export default defineConfig(({ mode }) => {
   // Fail dev and build early on missing, malformed or unexpected VITE_* values.
-  createEnvSchema(mode).parse(loadEnv(mode, process.cwd(), "VITE_"))
+  createEnvSchema(mode).parse(loadEnv(mode, import.meta.dirname, "VITE_"))
 
   return {
     plugins: [

@@ -1,0 +1,36 @@
+# Installed by the root `prepare` script (`bun install` runs it).
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{ts,tsx,js,jsx,mjs,json,css,md,yml,yaml}"
+      exclude: &generated
+        - "**/generated/**"
+        - "**/*.gen.ts"
+        - "**/paraglide/**"
+      run: bunx oxfmt {staged_files}
+      stage_fixed: true
+    # Lint from each workspace so its .oxlintrc.json (type-aware) is the run root, as in CI.
+    lint-web:
+      root: apps/web/
+      glob: "*.{ts,tsx}"
+      exclude: *generated
+      run: bunx oxlint --type-aware --fix {staged_files}
+      stage_fixed: true
+    lint-ui:
+      root: packages/ui/
+      glob: "*.{ts,tsx}"
+      exclude: *generated
+      run: bunx oxlint --type-aware --fix {staged_files}
+      stage_fixed: true
+    lint-api-client:
+      root: packages/api-client/
+      glob: "*.{ts,tsx}"
+      exclude: *generated
+      run: bunx oxlint --type-aware --fix {staged_files}
+      stage_fixed: true
+
+commit-msg:
+  commands:
+    commitlint:
+      run: bunx commitlint --edit {1}

@@ -1,0 +1,12 @@
+**/node_modules
+**/dist
+**/coverage
+**/.turbo
+**/.vitest
+.git
+.claude
+.athena
+# Includes the committed .env.production placeholder: image builds get VITE_* only
+# from --build-arg, never from files.
+**/.env*
+!**/.env.example
