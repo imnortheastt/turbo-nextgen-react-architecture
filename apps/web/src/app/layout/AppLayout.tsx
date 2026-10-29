@@ -23,6 +23,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <Link to="/" className={NAV_LINK} activeOptions={{ exact: true }}>
             {m.nav_home()}
           </Link>
+          <Link to="/todos" className={NAV_LINK}>
+            {m.nav_todos()}
+          </Link>
           <Link to="/dashboard" className={NAV_LINK}>
             {m.nav_dashboard()}
           </Link>

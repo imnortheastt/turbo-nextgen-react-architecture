@@ -1,0 +1,134 @@
+openapi: 3.1.0
+info:
+  title: Boilerplate API
+  version: 1.0.0
+  description: Example contract for the todos demo. Replace with your backend's spec.
+tags:
+  - name: health
+  - name: todos
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      tags: [health]
+      responses:
+        "200":
+          description: Service is up
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+  /todos:
+    get:
+      operationId: listTodos
+      tags: [todos]
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      responses:
+        "200":
+          description: One page of todos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoPage"
+    post:
+      operationId: createTodo
+      tags: [todos]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTodo"
+      responses:
+        "201":
+          description: Created todo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+  /todos/{id}:
+    patch:
+      operationId: updateTodo
+      tags: [todos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTodo"
+      responses:
+        "200":
+          description: Updated todo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+components:
+  schemas:
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+    Todo:
+      type: object
+      required: [id, title, done]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        done:
+          type: boolean
+    TodoPage:
+      type: object
+      required: [items, page, totalPages]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Todo"
+        page:
+          type: integer
+        totalPages:
+          type: integer
+    CreateTodo:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+    UpdateTodo:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        done:
+          type: boolean
+    # Documents error bodies (thrown as ApiError by apiFetch); success-only
+    # responses keep Orval's `data` type narrow.
+    Error:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string

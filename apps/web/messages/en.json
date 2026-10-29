@@ -12,5 +12,22 @@
   "palette_green": "Green",
   "palette_rose": "Rose",
   "palette_changed": "Color palette updated",
-  "locale_label": "Language"
+  "locale_label": "Language",
+  "nav_todos": "Todos",
+  "todos_title": "Todos",
+  "todos_new_label": "New todo",
+  "todos_new_placeholder": "What needs doing?",
+  "todos_add": "Add",
+  "todos_created": "Todo added",
+  "todos_empty": "Nothing here yet.",
+  "todos_title_required": "Enter a title",
+  "todos_title_too_long": "Keep it under 200 characters",
+  "filter_all": "All",
+  "filter_active": "Active",
+  "filter_done": "Done",
+  "todos_page": "Page {page} of {totalPages}",
+  "todos_prev": "Previous",
+  "todos_next": "Next",
+  "filter_label": "Filter by status",
+  "error_generic": "Something went wrong. Please try again."
 }

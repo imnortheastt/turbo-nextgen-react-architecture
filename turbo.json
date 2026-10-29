@@ -28,6 +28,10 @@
     "i18n:compile": {
       "inputs": ["project.inlang/**", "messages/**"],
       "outputs": ["src/shared/i18n/paraglide/**"]
+    },
+    "api:gen": {
+      "cache": false,
+      "inputs": ["api/**", "orval.config.ts"]
     }
   }
 }

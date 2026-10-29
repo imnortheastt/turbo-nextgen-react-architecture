@@ -9,11 +9,20 @@
   "scripts": {
     "lint": "oxlint --type-aware",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "api:gen": "orval"
   },
   "devDependencies": {
     "@repo/config": "workspace:*",
+    "@tanstack/react-query": "5.105.0",
+    "@types/react": "19.3.0",
     "@vitest/coverage-v8": "5.0.5",
+    "orval": "8.45.0",
+    "react": "19.3.1",
     "vitest": "5.0.5"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "5.105.0",
+    "react": "19.3.1"
   }
 }

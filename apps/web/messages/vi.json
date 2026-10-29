@@ -12,5 +12,22 @@
   "palette_green": "Xanh lá",
   "palette_rose": "Hồng",
   "palette_changed": "Đã cập nhật bảng màu",
-  "locale_label": "Ngôn ngữ"
+  "locale_label": "Ngôn ngữ",
+  "nav_todos": "Việc cần làm",
+  "todos_title": "Việc cần làm",
+  "todos_new_label": "Việc mới",
+  "todos_new_placeholder": "Bạn cần làm gì?",
+  "todos_add": "Thêm",
+  "todos_created": "Đã thêm việc",
+  "todos_empty": "Chưa có gì ở đây.",
+  "todos_title_required": "Hãy nhập tiêu đề",
+  "todos_title_too_long": "Tối đa 200 ký tự",
+  "filter_all": "Tất cả",
+  "filter_active": "Đang làm",
+  "filter_done": "Đã xong",
+  "todos_page": "Trang {page}/{totalPages}",
+  "todos_prev": "Trước",
+  "todos_next": "Sau",
+  "filter_label": "Lọc theo trạng thái",
+  "error_generic": "Đã xảy ra lỗi. Vui lòng thử lại."
 }
