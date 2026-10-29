@@ -1,0 +1,19 @@
+{
+  "name": "@repo/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "oxlint --type-aware",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@vitest/coverage-v8": "5.0.5",
+    "vitest": "5.0.5"
+  }
+}

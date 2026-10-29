@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "extends": ["../../packages/config/oxlint/base.json"],
+  "options": { "typeAware": true },
+  "ignorePatterns": [
+    "dist",
+    "coverage",
+    "src/generated",
+    "src/**/*.gen.ts",
+    "src/shared/i18n/paraglide"
+  ]
+}
