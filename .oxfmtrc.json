@@ -9,12 +9,5 @@
     "stylesheet": "packages/ui/src/styles/globals.css",
     "functions": ["cn", "cva"]
   },
-  "ignorePatterns": [
-    ".athena/**",
-    ".claude/**",
-    "**/generated/**",
-    "**/*.gen.ts",
-    "**/paraglide/**",
-    "bun.lock"
-  ]
+  "ignorePatterns": ["**/generated/**", "**/*.gen.ts", "**/paraglide/**", "bun.lock"]
 }
