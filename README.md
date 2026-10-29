@@ -82,6 +82,7 @@ Only when a **second** page needs the same code:
 - **URL state rule.** Search params that a route loader depends on (e.g. `?page=`) are declared with `validateSearch` (Zod). Widget-local UI state in the URL (filters, tabs, e.g. `?status=`) uses **nuqs**. Routes hosting nuqs state use `z.looseObject` so router navigation keeps nuqs keys.
 - **API client.** Change `packages/api-client/api/openapi.yaml`, run `bunx turbo run api:gen`, and commit the output. Never edit `src/generated/**`; CI fails if it drifts from the spec. Orval's functions return `{ data, status, headers }`; unwrap `.data` in the `queryFn`. Non-2xx responses throw `ApiError`.
 - **Errors.** Failed mutations show a toast (`MutationCache` in `shared/api`). Failed route loads render the route error component.
+- **Zod + CSP.** Zod runs with `jitless: true` (`apps/web/src/app/setup-zod.ts`, imported first in `main.tsx`) so object schemas never probe `new Function` under the enforcing CSP; parsing is slightly slower, negligible at form/API payload sizes.
 - **Forms.** TanStack Form with a Zod schema as the validator (`pages/todos/ui/CreateTodoForm.tsx`).
 - **i18n.** Messages live in `apps/web/messages/{en,vi}.json`; use `m.<key>()` from `@/shared/i18n`. Locale is stored in localStorage; `setLocale()` reloads the page.
 - **Theme.** Light/dark/system plus `data-palette` color palettes, stored in Zustand. `public/theme-init.js` applies them before first paint and must mirror `readPersistedTheme` in `shared/model/theme.ts`; the theme test runs it.

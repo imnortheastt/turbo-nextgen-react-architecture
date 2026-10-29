@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 import { Link, useSearch } from "@tanstack/react-router"
 
 import { m } from "@/shared/i18n"
-import { Button } from "@repo/ui/components/button"
+import { buttonVariants } from "@repo/ui/components/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card"
 
 import { todoQueries } from "../api/queries.ts"
@@ -10,6 +10,13 @@ import { filterTodos } from "../model/todo.ts"
 import { CreateTodoForm } from "./CreateTodoForm.tsx"
 import { StatusFilter, useStatusFilter } from "./StatusFilter.tsx"
 import { TodoItem } from "./TodoItem.tsx"
+
+// Real links (navigation), styled as buttons; TanStack Link sets aria-disabled when disabled.
+const PAGER_LINK = buttonVariants({
+  variant: "outline",
+  size: "sm",
+  className: "aria-disabled:pointer-events-none aria-disabled:opacity-50",
+})
 
 export function TodosPage() {
   const { page } = useSearch({ from: "/todos" })
@@ -35,25 +42,25 @@ export function TodosPage() {
           </ul>
         )}
         <nav className="flex items-center justify-between text-sm">
-          <Button
-            variant="outline"
-            size="sm"
+          <Link
+            from="/todos"
+            search={(prev) => ({ ...prev, page: page - 1 })}
             disabled={page <= 1}
-            render={<Link from="/todos" search={(prev) => ({ ...prev, page: page - 1 })} />}
+            className={PAGER_LINK}
           >
             {m.todos_prev()}
-          </Button>
+          </Link>
           <span className="text-muted-foreground">
             {m.todos_page({ page: data.page, totalPages: data.totalPages })}
           </span>
-          <Button
-            variant="outline"
-            size="sm"
+          <Link
+            from="/todos"
+            search={(prev) => ({ ...prev, page: page + 1 })}
             disabled={page >= data.totalPages}
-            render={<Link from="/todos" search={(prev) => ({ ...prev, page: page + 1 })} />}
+            className={PAGER_LINK}
           >
             {m.todos_next()}
-          </Button>
+          </Link>
         </nav>
       </CardContent>
     </Card>

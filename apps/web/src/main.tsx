@@ -1,3 +1,5 @@
+// Must stay the first import: configures Zod before any schema is built (see setup-zod.ts).
+import "@/app/setup-zod.ts"
 import "@repo/ui/globals.css"
 import { QueryClientProvider } from "@tanstack/react-query"
 import { RouterProvider } from "@tanstack/react-router"

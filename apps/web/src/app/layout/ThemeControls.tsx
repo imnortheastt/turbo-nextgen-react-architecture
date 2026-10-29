@@ -68,7 +68,7 @@ export function ThemeControls() {
             }}
           >
             {MODES.map((value) => (
-              <DropdownMenuRadioItem key={value} value={value}>
+              <DropdownMenuRadioItem key={value} value={value} closeOnClick>
                 {MODE_LABELS[value]()}
               </DropdownMenuRadioItem>
             ))}
