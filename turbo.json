@@ -6,23 +6,28 @@
       "dependsOn": ["^transit"]
     },
     "lint": {
-      "dependsOn": ["transit"]
+      "dependsOn": ["transit", "i18n:compile"]
     },
     "typecheck": {
-      "dependsOn": ["transit"]
+      "dependsOn": ["transit", "i18n:compile"]
     },
     "test": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit", "i18n:compile"],
       "outputs": ["coverage/**"]
     },
     "build": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit", "i18n:compile"],
       "env": ["VITE_*"],
       "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["i18n:compile"]
+    },
+    "i18n:compile": {
+      "inputs": ["project.inlang/**", "messages/**"],
+      "outputs": ["src/shared/i18n/paraglide/**"]
     }
   }
 }

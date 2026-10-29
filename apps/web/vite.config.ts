@@ -1,3 +1,4 @@
+import { paraglideVitePlugin } from "@inlang/paraglide-js"
 import babel from "@rolldown/plugin-babel"
 import tailwindcss from "@tailwindcss/vite"
 import { tanstackRouter } from "@tanstack/router-plugin/vite"
@@ -21,9 +22,37 @@ export default defineConfig(({ mode }) => {
       react(),
       babel({ presets: [reactCompilerPreset()] }),
       tailwindcss(),
+      // Keep options in sync with the `i18n:compile` script in package.json.
+      paraglideVitePlugin({
+        project: "./project.inlang",
+        outdir: "./src/shared/i18n/paraglide",
+        strategy: ["localStorage", "preferredLanguage", "baseLocale"],
+      }),
     ],
     resolve: {
       tsconfigPaths: true,
+    },
+    build: {
+      rolldownOptions: {
+        output: {
+          // Stable vendor chunks: app-only deploys keep framework code cached.
+          codeSplitting: {
+            groups: [
+              {
+                name: "react",
+                test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+                priority: 3,
+              },
+              { name: "tanstack", test: /[\\/]node_modules[\\/]@tanstack[\\/]/, priority: 2 },
+              {
+                name: "ui",
+                test: /[\\/]node_modules[\\/](@base-ui|@floating-ui|sonner|lucide-react)[\\/]/,
+                priority: 1,
+              },
+            ],
+          },
+        },
+      },
     },
   }
 })

@@ -1,12 +1,22 @@
 {
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "extends": ["../../packages/config/oxlint/base.json"],
-  "options": { "typeAware": true },
+  "options": {
+    "typeAware": true
+  },
   "ignorePatterns": [
     "dist",
     "coverage",
     "src/generated",
     "src/**/*.gen.ts",
     "src/shared/i18n/paraglide"
+  ],
+  "overrides": [
+    {
+      "files": ["src/components/label.tsx"],
+      "rules": {
+        "jsx-a11y/label-has-associated-control": "off"
+      }
+    }
   ]
 }

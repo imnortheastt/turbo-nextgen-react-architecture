@@ -119,6 +119,41 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/*
+ * Color palettes: set data-palette on <html> (the app owns the state).
+ * "neutral" is the base theme above, so it needs no overrides.
+ */
+[data-palette="blue"] {
+  --primary: oklch(0.546 0.245 262.881);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --ring: oklch(0.623 0.214 259.815);
+}
+.dark[data-palette="blue"] {
+  --primary: oklch(0.623 0.214 259.815);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --ring: oklch(0.488 0.243 264.376);
+}
+[data-palette="green"] {
+  --primary: oklch(0.527 0.154 150.069);
+  --primary-foreground: oklch(0.982 0.018 155.826);
+  --ring: oklch(0.723 0.219 149.579);
+}
+.dark[data-palette="green"] {
+  --primary: oklch(0.723 0.219 149.579);
+  --primary-foreground: oklch(0.266 0.065 152.934);
+  --ring: oklch(0.527 0.154 150.069);
+}
+[data-palette="rose"] {
+  --primary: oklch(0.586 0.253 17.585);
+  --primary-foreground: oklch(0.969 0.015 12.422);
+  --ring: oklch(0.645 0.246 16.439);
+}
+.dark[data-palette="rose"] {
+  --primary: oklch(0.645 0.246 16.439);
+  --primary-foreground: oklch(0.969 0.015 12.422);
+  --ring: oklch(0.455 0.188 13.697);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

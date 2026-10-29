@@ -1,0 +1,16 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "nav_home": "Trang chủ",
+  "nav_dashboard": "Bảng điều khiển",
+  "theme_mode": "Giao diện",
+  "theme_light": "Sáng",
+  "theme_dark": "Tối",
+  "theme_system": "Hệ thống",
+  "theme_palette": "Màu sắc",
+  "palette_neutral": "Trung tính",
+  "palette_blue": "Xanh dương",
+  "palette_green": "Xanh lá",
+  "palette_rose": "Hồng",
+  "palette_changed": "Đã cập nhật bảng màu",
+  "locale_label": "Ngôn ngữ"
+}

@@ -8,8 +8,10 @@ import { createAppRouter } from "@/app/router.ts"
 import { initSentry, reportReactError } from "@/app/sentry.ts"
 import { createQueryClient } from "@/shared/api"
 import { env } from "@/shared/config"
+import { getLocale } from "@/shared/i18n"
 import { configureApiClient } from "@repo/api-client"
 
+document.documentElement.lang = getLocale()
 configureApiClient({ baseUrl: env.VITE_API_URL })
 
 const queryClient = createQueryClient()

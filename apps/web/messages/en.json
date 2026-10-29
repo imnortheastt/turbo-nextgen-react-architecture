@@ -1,0 +1,16 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "nav_home": "Home",
+  "nav_dashboard": "Dashboard",
+  "theme_mode": "Theme",
+  "theme_light": "Light",
+  "theme_dark": "Dark",
+  "theme_system": "System",
+  "theme_palette": "Color",
+  "palette_neutral": "Neutral",
+  "palette_blue": "Blue",
+  "palette_green": "Green",
+  "palette_rose": "Rose",
+  "palette_changed": "Color palette updated",
+  "locale_label": "Language"
+}
