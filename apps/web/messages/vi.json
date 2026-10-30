@@ -107,5 +107,7 @@
   "size_large": "Lớn",
   "font_system": "Hệ thống",
   "radius_none": "Không",
-  "close": "Đóng"
+  "close": "Đóng",
+  "sidebar_title": "Điều hướng",
+  "sidebar_description": "Liên kết đến các trang khi đã đăng nhập."
 }

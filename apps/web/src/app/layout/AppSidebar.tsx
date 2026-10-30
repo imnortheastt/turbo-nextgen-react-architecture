@@ -32,7 +32,11 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar
+      collapsible="icon"
+      mobileTitle={m.sidebar_title()}
+      mobileDescription={m.sidebar_description()}
+    >
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

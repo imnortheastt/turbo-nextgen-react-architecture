@@ -107,5 +107,7 @@
   "size_large": "Large",
   "font_system": "System",
   "radius_none": "None",
-  "close": "Close"
+  "close": "Close",
+  "sidebar_title": "Navigation",
+  "sidebar_description": "Links to the signed-in pages."
 }
