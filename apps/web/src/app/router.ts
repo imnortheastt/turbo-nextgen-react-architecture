@@ -2,7 +2,6 @@ import type { QueryClient } from "@tanstack/react-query"
 import { createRouter, type RouterHistory } from "@tanstack/react-router"
 
 import { NotFoundPage } from "@/pages/not-found"
-import { authContext } from "@/shared/model"
 
 import { RouteError } from "./layout/RouteError.tsx"
 import { routeTree } from "./routeTree.gen.ts"
@@ -12,7 +11,7 @@ export function createAppRouter(queryClient: QueryClient, history?: RouterHistor
   return createRouter({
     routeTree,
     ...(history && { history }),
-    context: { queryClient, auth: authContext },
+    context: { queryClient },
     defaultPreload: "intent",
     // Let TanStack Query decide freshness for preloaded data.
     defaultPreloadStaleTime: 0,

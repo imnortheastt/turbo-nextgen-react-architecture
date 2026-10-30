@@ -29,5 +29,13 @@
   "todos_prev": "Trước",
   "todos_next": "Sau",
   "filter_label": "Lọc theo trạng thái",
-  "error_generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+  "error_generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+  "session_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+  "validation_email": "Nhập địa chỉ email hợp lệ",
+  "validation_password_required": "Nhập mật khẩu",
+  "auth_sign_in_title": "Đăng nhập",
+  "auth_sign_in": "Đăng nhập",
+  "auth_email": "Email",
+  "auth_password": "Mật khẩu",
+  "auth_invalid_credentials": "Email hoặc mật khẩu không đúng"
 }

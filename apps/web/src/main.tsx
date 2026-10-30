@@ -8,13 +8,23 @@ import { createRoot } from "react-dom/client"
 
 import { createAppRouter } from "@/app/router.ts"
 import { initSentry, reportReactError } from "@/app/sentry.ts"
-import { createQueryClient } from "@/shared/api"
+import {
+  createQueryClient,
+  getAccessToken,
+  refreshAccessToken,
+  SESSION_QUERY_KEY,
+} from "@/shared/api"
 import { env } from "@/shared/config"
-import { getLocale } from "@/shared/i18n"
+import { getLocale, m } from "@/shared/i18n"
 import { configureApiClient } from "@repo/api-client"
+import { toast } from "@repo/ui/components/sonner"
 
 document.documentElement.lang = getLocale()
-configureApiClient({ baseUrl: env.VITE_API_URL })
+configureApiClient({
+  baseUrl: env.VITE_API_URL,
+  getToken: getAccessToken,
+  refresh: refreshAccessToken,
+})
 
 // The DEV check is a build-time constant, so production bundles drop the mock entirely.
 if (import.meta.env.DEV && env.VITE_API_MOCK) {
@@ -22,7 +32,16 @@ if (import.meta.env.DEV && env.VITE_API_MOCK) {
   await startMockWorker(env.VITE_API_URL)
 }
 
-const queryClient = createQueryClient()
+const queryClient = createQueryClient({
+  // A signed-in request is still 401 after the refresh: the session ended elsewhere.
+  onUnauthorized: () => {
+    queryClient.setQueryData(SESSION_QUERY_KEY, null)
+    toast.warning(m.session_expired())
+    // Re-runs route guards, which send the user to /login?redirect=… . `router` is
+    // declared below; this only runs after a request has failed, long after setup.
+    void router.invalidate()
+  },
+})
 const router = createAppRouter(queryClient)
 void initSentry(router)
 

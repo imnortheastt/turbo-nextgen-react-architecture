@@ -29,5 +29,13 @@
   "todos_prev": "Previous",
   "todos_next": "Next",
   "filter_label": "Filter by status",
-  "error_generic": "Something went wrong. Please try again."
+  "error_generic": "Something went wrong. Please try again.",
+  "session_expired": "Your session has expired. Please sign in again.",
+  "validation_email": "Enter a valid email address",
+  "validation_password_required": "Enter your password",
+  "auth_sign_in_title": "Sign in",
+  "auth_sign_in": "Sign in",
+  "auth_email": "Email",
+  "auth_password": "Password",
+  "auth_invalid_credentials": "Invalid email or password"
 }
