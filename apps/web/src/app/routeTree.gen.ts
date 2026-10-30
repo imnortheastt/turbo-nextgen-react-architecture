@@ -12,8 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as GuestRouteImport } from './routes/_guest'
 import { Route as PublicRouteImport } from './routes/_public'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as GuestForgotPasswordRouteImport } from './routes/_guest/forgot-password'
 import { Route as GuestLoginRouteImport } from './routes/_guest/login'
+import { Route as GuestRegisterRouteImport } from './routes/_guest/register'
+import { Route as GuestResetPasswordRouteImport } from './routes/_guest/reset-password'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PublicTodosRouteImport } from './routes/_public/todos'
 
@@ -29,14 +33,34 @@ const PublicRoute = PublicRouteImport.update({
   id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const GuestForgotPasswordRoute = GuestForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => GuestRoute,
+} as any)
 const GuestLoginRoute = GuestLoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => GuestRoute,
+} as any)
+const GuestRegisterRoute = GuestRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => GuestRoute,
+} as any)
+const GuestResetPasswordRoute = GuestResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => GuestRoute,
 } as any)
 const PublicIndexRoute = PublicIndexRouteImport.update({
@@ -52,14 +76,22 @@ const PublicTodosRoute = PublicTodosRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/forgot-password': typeof GuestForgotPasswordRoute
   '/login': typeof GuestLoginRoute
+  '/register': typeof GuestRegisterRoute
+  '/reset-password': typeof GuestResetPasswordRoute
   '/todos': typeof PublicTodosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/forgot-password': typeof GuestForgotPasswordRoute
   '/login': typeof GuestLoginRoute
+  '/register': typeof GuestRegisterRoute
+  '/reset-password': typeof GuestResetPasswordRoute
   '/todos': typeof PublicTodosRoute
 }
 export interface FileRoutesById {
@@ -67,23 +99,47 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_guest': typeof GuestRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/verify-email': typeof VerifyEmailRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_guest/forgot-password': typeof GuestForgotPasswordRoute
   '/_guest/login': typeof GuestLoginRoute
+  '/_guest/register': typeof GuestRegisterRoute
+  '/_guest/reset-password': typeof GuestResetPasswordRoute
   '/_public/todos': typeof PublicTodosRoute
   '/_public/': typeof PublicIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/todos'
+  fullPaths:
+    | '/'
+    | '/verify-email'
+    | '/dashboard'
+    | '/forgot-password'
+    | '/login'
+    | '/register'
+    | '/reset-password'
+    | '/todos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/todos'
+  to:
+    | '/'
+    | '/verify-email'
+    | '/dashboard'
+    | '/forgot-password'
+    | '/login'
+    | '/register'
+    | '/reset-password'
+    | '/todos'
   id:
     | '__root__'
     | '/_authenticated'
     | '/_guest'
     | '/_public'
+    | '/verify-email'
     | '/_authenticated/dashboard'
+    | '/_guest/forgot-password'
     | '/_guest/login'
+    | '/_guest/register'
+    | '/_guest/reset-password'
     | '/_public/todos'
     | '/_public/'
   fileRoutesById: FileRoutesById
@@ -92,6 +148,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   GuestRoute: typeof GuestRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -117,6 +174,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -124,11 +188,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_guest/forgot-password': {
+      id: '/_guest/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof GuestForgotPasswordRouteImport
+      parentRoute: typeof GuestRoute
+    }
     '/_guest/login': {
       id: '/_guest/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof GuestLoginRouteImport
+      parentRoute: typeof GuestRoute
+    }
+    '/_guest/register': {
+      id: '/_guest/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof GuestRegisterRouteImport
+      parentRoute: typeof GuestRoute
+    }
+    '/_guest/reset-password': {
+      id: '/_guest/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof GuestResetPasswordRouteImport
       parentRoute: typeof GuestRoute
     }
     '/_public/': {
@@ -161,11 +246,17 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 interface GuestRouteChildren {
+  GuestForgotPasswordRoute: typeof GuestForgotPasswordRoute
   GuestLoginRoute: typeof GuestLoginRoute
+  GuestRegisterRoute: typeof GuestRegisterRoute
+  GuestResetPasswordRoute: typeof GuestResetPasswordRoute
 }
 
 const GuestRouteChildren: GuestRouteChildren = {
+  GuestForgotPasswordRoute: GuestForgotPasswordRoute,
   GuestLoginRoute: GuestLoginRoute,
+  GuestRegisterRoute: GuestRegisterRoute,
+  GuestResetPasswordRoute: GuestResetPasswordRoute,
 }
 
 const GuestRouteWithChildren = GuestRoute._addFileChildren(GuestRouteChildren)
@@ -187,6 +278,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   GuestRoute: GuestRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
+  VerifyEmailRoute: VerifyEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

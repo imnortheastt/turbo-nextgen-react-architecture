@@ -8,7 +8,23 @@ import {
   SESSION_QUERY_KEY,
   setAccessToken,
 } from "@/shared/api"
-import { ApiError, getMe, login, logout, type LoginRequest, type User } from "@repo/api-client"
+import {
+  ApiError,
+  forgotPassword,
+  getMe,
+  login,
+  logout,
+  register,
+  resendVerification,
+  resetPassword,
+  verifyEmail,
+  type AuthTokens,
+  type ForgotPasswordRequest,
+  type LoginRequest,
+  type RegisterRequest,
+  type ResetPasswordRequest,
+  type User,
+} from "@repo/api-client"
 
 /**
  * The signed-in user, or null when signed out. Source of truth for route guards
@@ -31,16 +47,70 @@ export const sessionQuery = queryOptions({
   staleTime: 5 * 60_000,
 })
 
-export function useLogin() {
+/** Stores a fresh sign-in: token in memory, user in the session cache. */
+function useStartSession() {
   const queryClient = useQueryClient()
+  return ({ accessToken, user }: AuthTokens) => {
+    setAccessToken(accessToken)
+    queryClient.setQueryData(sessionQuery.queryKey, user)
+  }
+}
+
+export function useLogin() {
+  const startSession = useStartSession()
   return useMutation({
     mutationFn: async (input: LoginRequest) => (await login(input)).data,
-    onSuccess: ({ accessToken, user }) => {
-      setAccessToken(accessToken)
-      queryClient.setQueryData(sessionQuery.queryKey, user)
-    },
+    onSuccess: startSession,
     // The form shows "invalid email or password" itself.
     meta: { errorToast: false },
+  })
+}
+
+/** Creates an unverified account and signs it in; the API sends the verification email. */
+export function useRegister() {
+  const startSession = useStartSession()
+  return useMutation({
+    mutationFn: async (input: RegisterRequest) => (await register(input)).data,
+    onSuccess: startSession,
+    meta: { errorToast: false },
+  })
+}
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: async (input: ForgotPasswordRequest) => {
+      await forgotPassword(input)
+    },
+    meta: { errorToast: false },
+  })
+}
+
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: async (input: ResetPasswordRequest) => {
+      await resetPassword(input)
+    },
+    meta: { errorToast: false },
+  })
+}
+
+export function useVerifyEmail() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (token: string) => {
+      await verifyEmail({ token })
+    },
+    // A signed-in user's `emailVerified` changed; signed out, this resolves to null.
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey }),
+    meta: { errorToast: false },
+  })
+}
+
+export function useResendVerification() {
+  return useMutation({
+    mutationFn: async () => {
+      await resendVerification()
+    },
   })
 }
 

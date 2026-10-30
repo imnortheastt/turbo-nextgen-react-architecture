@@ -1,13 +1,14 @@
 import { useForm } from "@tanstack/react-form"
-import { useRouter, useSearch } from "@tanstack/react-router"
+import { Link, useRouter, useSearch } from "@tanstack/react-router"
 import { useState } from "react"
 
 import { apiErrorCode, loginSchema, useLogin } from "@/entities/session"
 import { m } from "@/shared/i18n"
 import { safeRedirect } from "@/shared/lib"
+import { TextField } from "@/shared/ui"
 import { Button } from "@repo/ui/components/button"
-import { Input } from "@repo/ui/components/input"
-import { Label } from "@repo/ui/components/label"
+
+const LINK = "text-primary underline-offset-4 hover:underline"
 
 export function LoginPage() {
   const router = useRouter()
@@ -39,7 +40,7 @@ export function LoginPage() {
   })
 
   return (
-    <section className="flex max-w-sm flex-col gap-4">
+    <section className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold">{m.auth_sign_in_title()}</h1>
       <form
         className="flex flex-col gap-4"
@@ -55,57 +56,23 @@ export function LoginPage() {
           </p>
         )}
         <form.Field name="email">
-          {(field) => {
-            const error = field.state.meta.errors[0]?.message
-            return (
-              <div className="flex flex-col gap-2">
-                <Label htmlFor={field.name}>{m.auth_email()}</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="email"
-                  autoComplete="email"
-                  value={field.state.value}
-                  aria-invalid={error ? true : undefined}
-                  aria-describedby={error ? `${field.name}-error` : undefined}
-                  onBlur={field.handleBlur}
-                  onChange={(event) => field.handleChange(event.target.value)}
-                />
-                {error && (
-                  <p id={`${field.name}-error`} className="text-sm text-destructive">
-                    {error}
-                  </p>
-                )}
-              </div>
-            )
-          }}
+          {(field) => (
+            <TextField field={field} label={m.auth_email()} type="email" autoComplete="email" />
+          )}
         </form.Field>
         <form.Field name="password">
-          {(field) => {
-            const error = field.state.meta.errors[0]?.message
-            return (
-              <div className="flex flex-col gap-2">
-                <Label htmlFor={field.name}>{m.auth_password()}</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="password"
-                  autoComplete="current-password"
-                  value={field.state.value}
-                  aria-invalid={error ? true : undefined}
-                  aria-describedby={error ? `${field.name}-error` : undefined}
-                  onBlur={field.handleBlur}
-                  onChange={(event) => field.handleChange(event.target.value)}
-                />
-                {error && (
-                  <p id={`${field.name}-error`} className="text-sm text-destructive">
-                    {error}
-                  </p>
-                )}
-              </div>
-            )
-          }}
+          {(field) => (
+            <TextField
+              field={field}
+              label={m.auth_password()}
+              type="password"
+              autoComplete="current-password"
+            />
+          )}
         </form.Field>
+        <Link to="/forgot-password" className={`self-end text-sm ${LINK}`}>
+          {m.auth_forgot_link()}
+        </Link>
         <form.Subscribe selector={(state) => state.isSubmitting}>
           {(isSubmitting) => (
             <Button type="submit" disabled={isSubmitting}>
@@ -114,6 +81,12 @@ export function LoginPage() {
           )}
         </form.Subscribe>
       </form>
+      <p className="text-sm text-muted-foreground">
+        {m.auth_no_account()}{" "}
+        <Link to="/register" className={LINK}>
+          {m.auth_create_one()}
+        </Link>
+      </p>
     </section>
   )
 }

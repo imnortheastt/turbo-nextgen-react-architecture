@@ -7,6 +7,7 @@ import { AppSidebar } from "./AppSidebar.tsx"
 import { HeaderControls } from "./HeaderControls.tsx"
 import { PageTransition } from "./PageTransition.tsx"
 import { UserMenu } from "./UserMenu.tsx"
+import { VerifyEmailBanner } from "./VerifyEmailBanner.tsx"
 
 /** Signed-in area: collapsible sidebar (a sheet on mobile) plus a header with the user menu. */
 export function DashboardLayout({ children }: { children: ReactNode }) {
@@ -27,6 +28,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
             <UserMenu />
           </div>
         </header>
+        <VerifyEmailBanner />
         <PageTransition className="flex-1 p-6">{children}</PageTransition>
       </SidebarInset>
     </SidebarProvider>

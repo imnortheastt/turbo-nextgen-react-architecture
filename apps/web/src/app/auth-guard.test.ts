@@ -154,6 +154,17 @@ describe("_guest route guard", () => {
     expect(router.state.location.pathname).toBe("/dashboard")
   })
 
+  it.each(["/register", "/forgot-password", "/reset-password?token=t"])(
+    "sends signed-in users from %s to /dashboard",
+    async (path) => {
+      await signIn()
+
+      const { router } = await loadAt(path)
+
+      expect(router.state.location.pathname).toBe("/dashboard")
+    },
+  )
+
   it("shows /login to signed-out users", async () => {
     const { router } = await loadAt("/login?redirect=%2Ftodos")
 
@@ -173,5 +184,19 @@ describe("_public routes", () => {
     const { router } = await loadAt(path)
 
     expect(router.state.location.pathname).toBe(path)
+  })
+})
+
+describe("/verify-email", () => {
+  it.each([
+    ["signed out", false],
+    ["signed in", true],
+  ])("is reachable %s", async (_label, signedIn) => {
+    if (signedIn) await signIn()
+
+    const { router } = await loadAt("/verify-email?token=abc")
+
+    expect(router.state.location.pathname).toBe("/verify-email")
+    expect(router.state.location.search).toEqual({ token: "abc" })
   })
 })

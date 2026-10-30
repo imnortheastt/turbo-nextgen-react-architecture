@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { z } from "zod"
 
 import { LoginPage } from "@/pages/login"
+import { m } from "@/shared/i18n"
 
 const loginSearchSchema = z.object({
   redirect: z.string().optional().catch(undefined),
@@ -9,6 +10,6 @@ const loginSearchSchema = z.object({
 
 export const Route = createFileRoute("/_guest/login")({
   validateSearch: loginSearchSchema,
-  head: () => ({ meta: [{ title: "Sign in · FSD Boilerplate" }] }),
+  head: () => ({ meta: [{ title: `${m.auth_sign_in_title()} · FSD Boilerplate` }] }),
   component: LoginPage,
 })
