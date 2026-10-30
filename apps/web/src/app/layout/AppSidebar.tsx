@@ -1,5 +1,5 @@
 import { Link, useMatchRoute, type LinkProps } from "@tanstack/react-router"
-import { LayoutDashboardIcon, type LucideIcon } from "lucide-react"
+import { LayoutDashboardIcon, SettingsIcon, type LucideIcon } from "lucide-react"
 
 import { m } from "@/shared/i18n"
 import {
@@ -20,6 +20,7 @@ type NavItem = { to: LinkProps["to"]; label: () => string; icon: LucideIcon }
 // Signed-in pages only; public pages (home, todos) live in the public header.
 const NAV_ITEMS: NavItem[] = [
   { to: "/dashboard", label: m.nav_dashboard, icon: LayoutDashboardIcon },
+  { to: "/settings", label: m.nav_settings, icon: SettingsIcon },
 ]
 
 export function AppSidebar() {

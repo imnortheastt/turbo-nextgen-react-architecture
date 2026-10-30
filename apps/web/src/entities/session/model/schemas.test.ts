@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { loginSchema, registerSchema, resetPasswordSchema } from "./schemas.ts"
+import {
+  changePasswordSchema,
+  loginSchema,
+  profileSchema,
+  registerSchema,
+  resetPasswordSchema,
+} from "./schemas.ts"
 
 describe("loginSchema", () => {
   it("normalizes the email", () => {
@@ -58,5 +64,27 @@ describe("resetPasswordSchema", () => {
     expect(
       resetPasswordSchema.safeParse({ password: "short", confirmPassword: "short" }).success,
     ).toBe(false)
+  })
+})
+
+describe("changePasswordSchema", () => {
+  it("requires the current password and a matching new one", () => {
+    const valid = {
+      currentPassword: "old",
+      password: "new-password",
+      confirmPassword: "new-password",
+    }
+    expect(changePasswordSchema.safeParse(valid).success).toBe(true)
+    expect(changePasswordSchema.safeParse({ ...valid, currentPassword: "" }).success).toBe(false)
+    expect(changePasswordSchema.safeParse({ ...valid, confirmPassword: "nope-nope" }).success).toBe(
+      false,
+    )
+  })
+})
+
+describe("profileSchema", () => {
+  it("trims the name and rejects blanks", () => {
+    expect(profileSchema.parse({ name: "  Ada  " })).toEqual({ name: "Ada" })
+    expect(profileSchema.safeParse({ name: "   " }).success).toBe(false)
   })
 })

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import { Link } from "@tanstack/react-router"
 
 import { sessionQuery, useLogout } from "@/entities/session"
 import { m } from "@/shared/i18n"
@@ -35,6 +36,15 @@ export function UserMenu() {
             <span className="text-foreground">{user.name}</span>
             <span className="font-normal">{user.email}</span>
           </DropdownMenuLabel>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem render={<Link to="/settings/profile" />}>
+            {m.nav_profile()}
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link to="/settings/security" />}>
+            {m.nav_security()}
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem disabled={logout.isPending} onClick={() => logout.mutate()}>

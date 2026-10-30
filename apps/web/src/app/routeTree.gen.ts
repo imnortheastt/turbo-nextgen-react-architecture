@@ -14,12 +14,16 @@ import { Route as GuestRouteImport } from './routes/_guest'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as GuestForgotPasswordRouteImport } from './routes/_guest/forgot-password'
 import { Route as GuestLoginRouteImport } from './routes/_guest/login'
 import { Route as GuestRegisterRouteImport } from './routes/_guest/register'
 import { Route as GuestResetPasswordRouteImport } from './routes/_guest/reset-password'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PublicTodosRouteImport } from './routes/_public/todos'
+import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated/settings/profile'
+import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated/settings/security'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
@@ -41,6 +45,11 @@ const VerifyEmailRoute = VerifyEmailRouteImport.update({
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const GuestForgotPasswordRoute = GuestForgotPasswordRouteImport.update({
@@ -73,16 +82,38 @@ const PublicTodosRoute = PublicTodosRouteImport.update({
   path: '/todos',
   getParentRoute: () => PublicRoute,
 } as any)
+const AuthenticatedSettingsIndexRoute =
+  AuthenticatedSettingsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedSettingsProfileRoute =
+  AuthenticatedSettingsProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedSettingsSecurityRoute =
+  AuthenticatedSettingsSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/forgot-password': typeof GuestForgotPasswordRoute
   '/login': typeof GuestLoginRoute
   '/register': typeof GuestRegisterRoute
   '/reset-password': typeof GuestResetPasswordRoute
   '/todos': typeof PublicTodosRoute
+  '/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/settings/': typeof AuthenticatedSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
@@ -93,6 +124,9 @@ export interface FileRoutesByTo {
   '/register': typeof GuestRegisterRoute
   '/reset-password': typeof GuestResetPasswordRoute
   '/todos': typeof PublicTodosRoute
+  '/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/settings': typeof AuthenticatedSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -101,12 +135,16 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/_guest/forgot-password': typeof GuestForgotPasswordRoute
   '/_guest/login': typeof GuestLoginRoute
   '/_guest/register': typeof GuestRegisterRoute
   '/_guest/reset-password': typeof GuestResetPasswordRoute
   '/_public/todos': typeof PublicTodosRoute
   '/_public/': typeof PublicIndexRoute
+  '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -114,11 +152,15 @@ export interface FileRouteTypes {
     | '/'
     | '/verify-email'
     | '/dashboard'
+    | '/settings'
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/todos'
+    | '/settings/profile'
+    | '/settings/security'
+    | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -129,6 +171,9 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/todos'
+    | '/settings/profile'
+    | '/settings/security'
+    | '/settings'
   id:
     | '__root__'
     | '/_authenticated'
@@ -136,12 +181,16 @@ export interface FileRouteTypes {
     | '/_public'
     | '/verify-email'
     | '/_authenticated/dashboard'
+    | '/_authenticated/settings'
     | '/_guest/forgot-password'
     | '/_guest/login'
     | '/_guest/register'
     | '/_guest/reset-password'
     | '/_public/todos'
     | '/_public/'
+    | '/_authenticated/settings/profile'
+    | '/_authenticated/settings/security'
+    | '/_authenticated/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -188,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_guest/forgot-password': {
       id: '/_guest/forgot-password'
       path: '/forgot-password'
@@ -230,15 +286,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicTodosRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_authenticated/settings/': {
+      id: '/_authenticated/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/settings/profile': {
+      id: '/_authenticated/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof AuthenticatedSettingsProfileRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/settings/security': {
+      id: '/_authenticated/settings/security'
+      path: '/security'
+      fullPath: '/settings/security'
+      preLoaderRoute: typeof AuthenticatedSettingsSecurityRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
   }
 }
 
+interface AuthenticatedSettingsRouteChildren {
+  AuthenticatedSettingsProfileRoute: typeof AuthenticatedSettingsProfileRoute
+  AuthenticatedSettingsSecurityRoute: typeof AuthenticatedSettingsSecurityRoute
+  AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
+}
+
+const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
+  AuthenticatedSettingsProfileRoute: AuthenticatedSettingsProfileRoute,
+  AuthenticatedSettingsSecurityRoute: AuthenticatedSettingsSecurityRoute,
+  AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
+}
+
+const AuthenticatedSettingsRouteWithChildren =
+  AuthenticatedSettingsRoute._addFileChildren(
+    AuthenticatedSettingsRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
