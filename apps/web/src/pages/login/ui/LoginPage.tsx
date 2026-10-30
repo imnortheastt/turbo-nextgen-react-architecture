@@ -11,7 +11,7 @@ import { Label } from "@repo/ui/components/label"
 
 export function LoginPage() {
   const router = useRouter()
-  const { redirect } = useSearch({ from: "/login" })
+  const { redirect } = useSearch({ from: "/_guest/login" })
   const login = useLogin()
   const [formError, setFormError] = useState<string>()
 
@@ -30,7 +30,9 @@ export function LoginPage() {
         )
         return
       }
-      await router.invalidate()
+      // No router.invalidate(): it would re-run the guest guard on this page and
+      // bounce to /dashboard before the redirect below. Navigation runs the
+      // destination's guards against the session cached by useLogin.
       // safeRedirect only yields same-origin paths, so `?redirect=` can never leave the app.
       await router.navigate({ href: safeRedirect(redirect) })
     },

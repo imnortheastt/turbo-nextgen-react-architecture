@@ -19,7 +19,7 @@ const PAGER_LINK = buttonVariants({
 })
 
 export function TodosPage() {
-  const { page } = useSearch({ from: "/todos" })
+  const { page } = useSearch({ from: "/_public/todos" })
   const { data } = useSuspenseQuery(todoQueries.list(page))
   const [status] = useStatusFilter()
   const todos = filterTodos(data.items, status)

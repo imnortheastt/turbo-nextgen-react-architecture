@@ -37,5 +37,10 @@
   "auth_sign_in": "Đăng nhập",
   "auth_email": "Email",
   "auth_password": "Mật khẩu",
-  "auth_invalid_credentials": "Email hoặc mật khẩu không đúng"
+  "auth_invalid_credentials": "Email hoặc mật khẩu không đúng",
+  "user_menu_label": "Menu tài khoản",
+  "sign_out": "Đăng xuất",
+  "skip_to_content": "Chuyển đến nội dung",
+  "sidebar_toggle": "Bật/tắt thanh bên",
+  "dashboard_welcome": "Chào mừng trở lại, {name}."
 }

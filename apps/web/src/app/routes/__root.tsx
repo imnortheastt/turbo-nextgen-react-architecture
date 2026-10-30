@@ -2,14 +2,17 @@ import { createRootRouteWithContext, HeadContent, Outlet } from "@tanstack/react
 import { NuqsAdapter } from "nuqs/adapters/tanstack-router"
 import { lazy, Suspense } from "react"
 
+import { NotFoundPage } from "@/pages/not-found"
 import { useApplyTheme, useResolvedMode } from "@/shared/model"
 import { Toaster } from "@repo/ui/components/sonner"
 
-import { AppLayout } from "../layout/AppLayout.tsx"
+import { PublicLayout } from "../layout/PublicLayout.tsx"
 import type { RouterContext } from "../router-context.ts"
 
 const Devtools = import.meta.env.DEV ? lazy(() => import("../devtools.tsx")) : () => null
 
+// Layouts live in the pathless _public, _guest and _authenticated routes; the
+// root only hosts app-wide providers.
 export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
@@ -18,6 +21,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     ],
   }),
   component: RootComponent,
+  // Unknown URLs match no layout route, so give them the public shell.
+  notFoundComponent: () => (
+    <PublicLayout>
+      <NotFoundPage />
+    </PublicLayout>
+  ),
 })
 
 function RootComponent() {
@@ -27,9 +36,7 @@ function RootComponent() {
   return (
     <NuqsAdapter>
       <HeadContent />
-      <AppLayout>
-        <Outlet />
-      </AppLayout>
+      <Outlet />
       <Toaster theme={resolvedMode} />
       <Suspense>
         <Devtools />

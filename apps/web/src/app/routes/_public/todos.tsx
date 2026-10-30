@@ -14,7 +14,7 @@ const todosSearchSchema = z.looseObject({
     .transform((page) => page ?? 1),
 })
 
-export const Route = createFileRoute("/todos")({
+export const Route = createFileRoute("/_public/todos")({
   validateSearch: todosSearchSchema,
   loaderDeps: ({ search }) => ({ page: search.page }),
   loader: ({ context, deps }) => context.queryClient.ensureQueryData(todoQueries.list(deps.page)),

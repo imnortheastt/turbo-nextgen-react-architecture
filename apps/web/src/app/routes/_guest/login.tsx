@@ -7,7 +7,7 @@ const loginSearchSchema = z.object({
   redirect: z.string().optional().catch(undefined),
 })
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/_guest/login")({
   validateSearch: loginSearchSchema,
   head: () => ({ meta: [{ title: "Sign in · FSD Boilerplate" }] }),
   component: LoginPage,

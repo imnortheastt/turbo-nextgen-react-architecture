@@ -1,21 +1,15 @@
-import { useLogout } from "@/entities/session"
-import { Button } from "@repo/ui/components/button"
+import { useQuery } from "@tanstack/react-query"
+
+import { sessionQuery } from "@/entities/session"
+import { m } from "@/shared/i18n"
 
 export function DashboardPage() {
-  const logout = useLogout()
+  const { data: user } = useQuery(sessionQuery)
 
   return (
-    <section className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold">Dashboard</h1>
-      <p className="text-muted-foreground">Only visible when signed in.</p>
-      <Button
-        variant="outline"
-        className="self-start"
-        disabled={logout.isPending}
-        onClick={() => logout.mutate()}
-      >
-        Sign out
-      </Button>
+    <section className="flex flex-col gap-2">
+      <h1 className="text-2xl font-semibold">{m.nav_dashboard()}</h1>
+      {user && <p className="text-muted-foreground">{m.dashboard_welcome({ name: user.name })}</p>}
     </section>
   )
 }

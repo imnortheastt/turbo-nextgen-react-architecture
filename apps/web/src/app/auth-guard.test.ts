@@ -144,3 +144,34 @@ describe("_authenticated route guard", () => {
     expect(onUnauthorized).toHaveBeenCalledTimes(1)
   })
 })
+
+describe("_guest route guard", () => {
+  it("sends signed-in users from /login to /dashboard", async () => {
+    await signIn()
+
+    const { router } = await loadAt("/login")
+
+    expect(router.state.location.pathname).toBe("/dashboard")
+  })
+
+  it("shows /login to signed-out users", async () => {
+    const { router } = await loadAt("/login?redirect=%2Ftodos")
+
+    expect(router.state.location.pathname).toBe("/login")
+    expect(router.state.location.search).toEqual({ redirect: "/todos" })
+  })
+})
+
+describe("_public routes", () => {
+  it.each(["/", "/todos"])("render %s for signed-out users without redirecting", async (path) => {
+    server.use(
+      http.get(`${TEST_API_URL}/todos`, () =>
+        HttpResponse.json({ items: [], page: 1, totalPages: 1 }),
+      ),
+    )
+
+    const { router } = await loadAt(path)
+
+    expect(router.state.location.pathname).toBe(path)
+  })
+})
