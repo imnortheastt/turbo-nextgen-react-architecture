@@ -1,9 +1,11 @@
 export {
+  FONT_FAMILIES,
+  FONT_SIZES,
   MODES,
   PALETTES,
-  useApplyTheme,
+  RADII,
+  useAppearanceStore,
+  useApplyAppearance,
   useResolvedMode,
-  useThemeStore,
-  type Mode,
-  type Palette,
-} from "./theme.ts"
+  type Appearance,
+} from "./appearance.ts"

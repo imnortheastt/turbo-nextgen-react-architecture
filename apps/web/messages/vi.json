@@ -11,7 +11,6 @@
   "palette_blue": "Xanh dương",
   "palette_green": "Xanh lá",
   "palette_rose": "Hồng",
-  "palette_changed": "Đã cập nhật bảng màu",
   "locale_label": "Ngôn ngữ",
   "nav_todos": "Việc cần làm",
   "todos_title": "Việc cần làm",
@@ -95,5 +94,18 @@
   "sessions_revoke_confirm": "Đồng ý, đăng xuất các phiên khác",
   "cancel": "Hủy",
   "sessions_device": "{browser} trên {os}",
-  "sessions_unknown_device": "Thiết bị không xác định"
+  "sessions_unknown_device": "Thiết bị không xác định",
+  "appearance_open": "Tùy chỉnh giao diện",
+  "appearance_title": "Giao diện",
+  "appearance_description": "Thay đổi được áp dụng ngay và lưu trên thiết bị này.",
+  "appearance_font": "Phông chữ",
+  "appearance_font_size": "Cỡ chữ",
+  "appearance_radius": "Bo góc",
+  "appearance_reset": "Khôi phục mặc định",
+  "size_small": "Nhỏ",
+  "size_default": "Mặc định",
+  "size_large": "Lớn",
+  "font_system": "Hệ thống",
+  "radius_none": "Không",
+  "close": "Đóng"
 }

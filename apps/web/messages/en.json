@@ -11,7 +11,6 @@
   "palette_blue": "Blue",
   "palette_green": "Green",
   "palette_rose": "Rose",
-  "palette_changed": "Color palette updated",
   "locale_label": "Language",
   "nav_todos": "Todos",
   "todos_title": "Todos",
@@ -95,5 +94,18 @@
   "sessions_revoke_confirm": "Yes, sign out other sessions",
   "cancel": "Cancel",
   "sessions_device": "{browser} on {os}",
-  "sessions_unknown_device": "Unknown device"
+  "sessions_unknown_device": "Unknown device",
+  "appearance_open": "Customize appearance",
+  "appearance_title": "Appearance",
+  "appearance_description": "Changes apply right away and are saved on this device.",
+  "appearance_font": "Font",
+  "appearance_font_size": "Font size",
+  "appearance_radius": "Corner radius",
+  "appearance_reset": "Reset to defaults",
+  "size_small": "Small",
+  "size_default": "Default",
+  "size_large": "Large",
+  "font_system": "System",
+  "radius_none": "None",
+  "close": "Close"
 }

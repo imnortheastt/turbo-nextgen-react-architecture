@@ -6,7 +6,7 @@ import { sessionQuery } from "@/entities/session"
 import { m } from "@/shared/i18n"
 import { buttonVariants } from "@repo/ui/components/button"
 
-import { HeaderControls } from "./HeaderControls.tsx"
+import { AppearanceDrawer } from "./AppearanceDrawer.tsx"
 import { PageTransition } from "./PageTransition.tsx"
 
 const NAV_LINK = "text-muted-foreground hover:text-foreground [&.active]:text-foreground"
@@ -26,7 +26,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             {m.nav_todos()}
           </Link>
           <div className="ml-auto flex items-center gap-2">
-            <HeaderControls />
+            <AppearanceDrawer />
             {user ? (
               <Link to="/dashboard" className={buttonVariants({ size: "sm" })}>
                 {m.nav_dashboard()}

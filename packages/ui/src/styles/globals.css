@@ -2,13 +2,15 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "@fontsource-variable/inter";
 
 @custom-variant dark (&:is(.dark *));
 @source "../**/*.{ts,tsx}";
 @source "../../../../apps/web/src";
 
 @theme inline {
-  --font-heading: var(--font-sans);
+  /* The app switches fonts at runtime through --app-font (see "Appearance" below). */
+  --font-heading: var(--app-font);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -154,9 +156,45 @@
   --ring: oklch(0.455 0.188 13.697);
 }
 
+/*
+ * Appearance: the app sets data-font, data-font-size and data-radius on <html>
+ * (apps/web shared/model/appearance.ts, applied before paint by theme-init.js).
+ * Tailwind inlines --font-sans at build time, so fonts switch through --app-font.
+ * Browsers only download a font file when the selected family uses it.
+ */
+:root {
+  --app-font: "Geist Variable", sans-serif;
+}
+[data-font="inter"] {
+  --app-font: "Inter Variable", sans-serif;
+}
+[data-font="system"] {
+  --app-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+/* Every size is in rem, so the root font size scales the whole UI. */
+[data-font-size="sm"] {
+  font-size: 87.5%;
+}
+[data-font-size="lg"] {
+  font-size: 112.5%;
+}
+/* "md" is the base --radius above. */
+[data-radius="none"] {
+  --radius: 0rem;
+}
+[data-radius="sm"] {
+  --radius: 0.375rem;
+}
+[data-radius="lg"] {
+  --radius: 0.875rem;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  html {
+    font-family: var(--app-font);
   }
   body {
     @apply bg-background text-foreground;

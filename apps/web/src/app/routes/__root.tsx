@@ -3,7 +3,7 @@ import { NuqsAdapter } from "nuqs/adapters/tanstack-router"
 import { lazy, Suspense } from "react"
 
 import { NotFoundPage } from "@/pages/not-found"
-import { useApplyTheme, useResolvedMode } from "@/shared/model"
+import { useApplyAppearance, useResolvedMode } from "@/shared/model"
 import { Toaster } from "@repo/ui/components/sonner"
 
 import { PublicLayout } from "../layout/PublicLayout.tsx"
@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function RootComponent() {
-  useApplyTheme()
+  useApplyAppearance()
   const resolvedMode = useResolvedMode()
 
   return (

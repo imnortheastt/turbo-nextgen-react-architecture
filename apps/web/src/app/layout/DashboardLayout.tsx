@@ -3,8 +3,8 @@ import type { ReactNode } from "react"
 import { m } from "@/shared/i18n"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@repo/ui/components/sidebar"
 
+import { AppearanceDrawer } from "./AppearanceDrawer.tsx"
 import { AppSidebar } from "./AppSidebar.tsx"
-import { HeaderControls } from "./HeaderControls.tsx"
 import { PageTransition } from "./PageTransition.tsx"
 import { UserMenu } from "./UserMenu.tsx"
 import { VerifyEmailBanner } from "./VerifyEmailBanner.tsx"
@@ -24,7 +24,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
         <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" aria-label={m.sidebar_toggle()} />
           <div className="ml-auto flex items-center gap-2">
-            <HeaderControls />
+            <AppearanceDrawer />
             <UserMenu />
           </div>
         </header>

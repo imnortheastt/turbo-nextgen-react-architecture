@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 
 import { Card, CardContent } from "@repo/ui/components/card"
 
-import { HeaderControls } from "./HeaderControls.tsx"
+import { AppearanceDrawer } from "./AppearanceDrawer.tsx"
 import { PageTransition } from "./PageTransition.tsx"
 
 /** Sign-in, registration and password pages: one centered card. */
@@ -14,7 +14,7 @@ export function GuestLayout({ children }: { children: ReactNode }) {
         <Link to="/" className="text-sm font-semibold">
           FSD Boilerplate
         </Link>
-        <HeaderControls />
+        <AppearanceDrawer />
       </header>
       <PageTransition className="flex flex-1 items-center justify-center px-4 py-8">
         <Card className="w-full max-w-sm">
